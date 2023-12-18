@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import Product from '../../components/Product/Product'
-import  { productService } from '../../apiServices/productService';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import Product from "../../components/Product/Product";
+import { productService } from "../../apiServices/productService";
+import { useParams } from "react-router-dom";
 const ProductPage = () => {
   const [products, setProduct] = useState([]);
-  const { category } = useParams();
-  
+  const { trademark } = useParams();
+
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const response = await productService(category);
+        const response = await productService(trademark);
         setProduct(response);
       } catch (error) {
         console.error("Error fetching product data:", error);
@@ -17,12 +17,12 @@ const ProductPage = () => {
     };
 
     fetchApi();
-  }, [category]);
+  }, [trademark]);
   return (
     <div>
-      <Product data={products}/>
+      <Product data={products} trademark={trademark} />
     </div>
-  )
-}
+  );
+};
 
-export default ProductPage
+export default ProductPage;
