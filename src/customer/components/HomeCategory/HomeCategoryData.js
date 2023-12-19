@@ -3,12 +3,12 @@ import logoSamsung from "../../../static/images/logo/logo-samsung.png";
 import logoXiaome from "../../../static/images/logo/logo-xiaome.png";
 import logoRealme from "../../../static/images/logo/logo-realme.png";
 import logoOppo from "../../../static/images/logo/logo-oppo.png";
-import logoKhac from "../../../static/images/logo/logo-khac.png";
+import logoLenovo from "../../../static/images/logo/logo-lenovo.jpg";
 export const homeCategoryData = [
   {
     id: 1,
     logo: logoIphone,
-    name: "Iphone",
+    name: "Apple",
   },
   {
     id: 2,
@@ -29,5 +29,10 @@ export const homeCategoryData = [
     id: 5,
     logo: logoOppo,
     name: "Oppo",
+  },
+  {
+    id: 5,
+    logo: logoLenovo,
+    name: "Lenovo",
   },
 ];
