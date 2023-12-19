@@ -13,6 +13,9 @@ import Login from './customer/components/Login/Login';
 import Order from './customer/components/Order/Order';
 import OrderDetail from './customer/components/OrderDetail/OrderDetail';
 import SetProfile from './customer/components/SetProfle/SetProfile';
+import Register from './customer/components/Register/Register';
+import ForgotPass from './customer/components/ForgotPass/ForgotPass';
+import ResetPass from './customer/components/ForgotPass/ResetPass';
 
 
 function App() {
@@ -23,6 +26,9 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/products' element={<ProductPage />} />
         <Route path='/set-profile' element={<SetProfile />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgot-password' element={<ForgotPass />} />
+        <Route path='/reset-password' element={<ResetPass />} />
         <Route path='/cart/:id' element={<Cart />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/my-order/:id' element={<Order />} />
