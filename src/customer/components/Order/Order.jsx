@@ -14,28 +14,36 @@ const Order = () => {
     setSelectedState(event.target.value);
   };
 
-  const filteredOrders = orders?.filter(order =>
-    selectedState == null || order.state == selectedState
-  );
+
   
 
   const fetchOrder = async () => {
     try {
       const data = await OrderService(id);
-      setOrders(data);
+      if (data) {
+        setOrders(data);
+      } else {
+        console.error("Invalid data received from OrderService");
+      }
     } catch (error) {
       console.error("Error fetching order data:", error);
     }
   };
+  
 
   const fetchCancelOrder = async (idOrder) => {
     try {
       const data = await cancelOrderService(idOrder);
-      setOrders(data);
+      if (data) {
+        setOrders(data);
+      } else {
+        console.error("Invalid data received from cancelOrderService");
+      }
     } catch (error) {
       console.error("Error canceling order:", error);
     }
   };
+  
 
   const handleDeleteOrder = async (idOrder) => {
     try {
@@ -45,7 +53,9 @@ const Order = () => {
       console.error("Error deleting order:", error);
     }
   };
-
+  const filteredOrders = orders?.filter(order =>
+    selectedState == null || order.state == selectedState
+  );
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) {
