@@ -45,8 +45,7 @@ const OrderDetail = () => {
   const handlePay = async () => {
     try {
       const payResult = await fetchCartCheckout();
-      console.log(payResult);
-      //window.location.href = payResult;
+      window.location.href = payResult;
     } catch (error) {
       console.error("Error handling payment:", error);
     }
