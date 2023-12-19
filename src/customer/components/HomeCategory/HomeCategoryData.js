@@ -3,7 +3,7 @@ import logoSamsung from "../../../static/images/logo/logo-samsung.png";
 import logoXiaome from "../../../static/images/logo/logo-xiaome.png";
 import logoRealme from "../../../static/images/logo/logo-realme.png";
 import logoOppo from "../../../static/images/logo/logo-oppo.png";
-import logoLenovo from "../../../static/images/logo/logo-lenovo.jpg";
+import logoVivo from "../../../static/images/logo/logo-vivo.png";
 export const homeCategoryData = [
   {
     id: 1,
@@ -32,7 +32,7 @@ export const homeCategoryData = [
   },
   {
     id: 6,
-    logo: logoLenovo,
-    name: "Lenovo",
+    logo: logoVivo,
+    name: "Vivo",
   },
 ];
