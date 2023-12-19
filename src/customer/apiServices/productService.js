@@ -13,6 +13,19 @@ export const productService = async (trademark) => {
   }
 };
 
+export const productAllService = async (trademark) => {
+  try {
+    const endpoint1 = "products";
+    console.log(endpoint1);
+    const dataproduct = await request.get(endpoint1);
+    console.log(dataproduct);
+    return dataproduct;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
 export const productDetailService = async (id) => {
   try {
     const endpoint = `product-detail/${id}`;
@@ -29,6 +42,18 @@ export const productDetailCategoryService = async (idProduct) => {
     const res = await request.get(endpoint);
     return res;
   } catch (error) {
+    throw error;
+  }
+};
+export const productSearchService = async (searchKey) => {
+  try {
+    const endpoint1 = searchKey ? `products/search/${searchKey}` : "products";
+    console.log(endpoint1);
+    const dataproduct = await request.get(endpoint1);
+    console.log(dataproduct);
+    return dataproduct;
+  } catch (error) {
+    console.error("Error fetching products:", error);
     throw error;
   }
 };

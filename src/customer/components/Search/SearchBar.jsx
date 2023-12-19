@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import request from "../../../utils/request";
 import { TERipple } from "tw-elements-react";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
-  const [suggestions, setSuggestions] = useState(["Sale", "Giảm giá sốc"]);
+  const navigate = useNavigate();
+  const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
   const [suggestionsList, setSuggestionsList] = useState([]);
   useEffect(() => {
@@ -23,9 +25,10 @@ const SearchBar = () => {
   }, []);
   const getSuggestions = (inputValue) => {
     const inputValueLowerCase = inputValue.toLowerCase();
-    return suggestions.filter((language) =>
-      language.toLowerCase().includes(inputValueLowerCase)
+    const filteredSuggestions = suggestions.filter((product) =>
+      product.name.toLowerCase().includes(inputValueLowerCase)
     );
+    return filteredSuggestions.slice(0, 10);
   };
 
   const onSuggestionsFetchRequested = ({ value }) => {
@@ -37,15 +40,19 @@ const SearchBar = () => {
   };
 
   const onChange = (event, { newValue }) => {
-    setValue(newValue);
+    setValue(newValue?.name ? newValue?.name : newValue);
   };
 
   const getSuggestionValue = (suggestion) => suggestion;
 
-  const renderSuggestion = (suggestion) => <div>{suggestion}</div>;
+  const renderSuggestion = (suggestion) => <div>{suggestion?.name}</div>;
 
+  const onSuggestionSelected = (event, { suggestion }) => {
+    event.preventDefault();
+    navigate(`product-detail/${suggestion?.id}`);
+  };
   const inputProps = {
-    placeholder: "Input search",
+    placeholder: "Enter product name",
     value,
     onChange: onChange,
   };
@@ -60,13 +67,15 @@ const SearchBar = () => {
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
+          onSuggestionSelected={onSuggestionSelected}
           inputProps={inputProps}
         />
         <button
           class="bg-gray-500 hover:bg-blue-500 text-white py-2 px-2 my-2 rounded"
           onClick={(e) => {
             e.preventDefault();
-            console.log(value); // Xử lí value ở đây nhé
+            console.log(value);
+            navigate(`products/search/${value}`);
           }}
         >
           Search
