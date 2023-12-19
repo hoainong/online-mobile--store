@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,9 +12,10 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
-        setError('Email and password are required');
-        return;
-      }
+      setError('Email and password are required');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:8080/api/auth/signin', {
         method: 'POST',
@@ -23,14 +27,21 @@ const Login = () => {
           password,
         }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('user', JSON.stringify(data));
         setError(null);
-        navigate('/');
+  
+        setTimeout(() => {
+          toast.success('Login successful');
+        }, 10);
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
       } else {
-        setError("password or email is incorrect");
+        setError('Password or email is incorrect');
+        toast.error('Login failed');
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -111,6 +122,7 @@ const Login = () => {
                                     {error}
                                 </div>
                                 )}
+                                <ToastContainer />
                             <p className="mt-8 text-gray-700 dark:text-gray-400">
                                 Need an account?
                                 <a href="#" className="font-semibold text-blue-400 hover:text-blue-600">

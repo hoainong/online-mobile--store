@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { productDetailService } from '../../apiServices/productService';
 import Review from './Review';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
@@ -36,29 +39,65 @@ const ProductDetails = () => {
     setSelectedImage(img);
   };
 
-
   const addToCart = async () => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+      const userId = user ? user.id : null;
       if (!user) {
+        await toast.promise(
+          new Promise((resolve) => {
+            toast.error("Please login", {
+              onClose: resolve,
+              style: {
+                backgroundColor: 'white', 
+                color: 'black',
+              },
+            });
+          })
+        );
         navigate('/login');
         return;
       }
+  
       await fetch(`http://localhost:8080/api/cart/add-to-cart/${userId}/${product.id}`, {
         method: 'POST',
       });
-
+  
+      await toast.promise(
+        new Promise((resolve) => {
+          toast.success("Add to cart successfully", {
+            onClose: resolve,
+            style: {
+              backgroundColor: 'white', 
+              color: 'green', 
+            },
+          });
+        })
+      );
+  
       setIsAddedToCart(true);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
   };
+  
+  
   const buyNow = async () => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
       const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
       if (!user) {
+        await toast.promise(
+          new Promise((resolve) => {
+            toast.error("Please login", {
+              onClose: resolve,
+              style: {
+                backgroundColor: 'white', 
+                color: 'black',
+              },
+            });
+          })
+        );
         navigate('/login');
         return;
       }
@@ -145,21 +184,24 @@ const ProductDetails = () => {
                 </div>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center gap-4">
-              <button
-                className="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700"
-                disabled={!isProductAvailable || !isProductState || isAddedToCart} 
-                onClick={addToCart}
-              >
-                {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
-              </button>
-              <button
-                className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-500 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300"
-                disabled={!isProductAvailable || !isProductState}
-                onClick={buyNow}
-              >
-                Buy Now
-              </button>
+              <div className="flex flex-row justify-between items-center">
+                <button
+                  className="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700"
+                  disabled={!isProductAvailable || !isProductState || isAddedToCart} 
+                  onClick={addToCart}
+                >
+                  {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
+                </button>
+
+                <button
+                  className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-500 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300"
+                  disabled={!isProductAvailable || !isProductState}
+                  onClick={buyNow}
+                >
+                  Buy Now
+                </button>
+
+                <ToastContainer />
               </div>
              
               
