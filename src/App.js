@@ -1,7 +1,7 @@
-import './App.css';
-import { Routes, Route } from 'react-router-dom';
-import Footer from './customer/components/Footer/Footer';
-import Navigation from './customer/components/Navigation';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Footer from "./customer/components/Footer/Footer";
+import Navigation from "./customer/components/Navigation";
 
 import ProductDetails from './customer/components/ProductDetails/ProductDetails';
 import HomePage from './customer/pages/HomePage/HomePage';
@@ -13,6 +13,7 @@ import Login from './customer/components/Login/Login';
 import Order from './customer/components/Order/Order';
 import OrderDetail from './customer/components/OrderDetail/OrderDetail';
 import SetProfile from './customer/components/SetProfle/SetProfile';
+
 
 function App() {
   return (
