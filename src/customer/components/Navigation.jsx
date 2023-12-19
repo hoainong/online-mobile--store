@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Disclosure } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import logoOMS from "../../static/images/logo/header__logophone.png";
-import { TERipple } from "tw-elements-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from 'react';
+import { Disclosure} from '@headlessui/react';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import logoOMS from '../../static/images/logo/header__logophone.png';
+import { TERipple } from 'tw-elements-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import SearchBar from "./Search/SearchBar";
 
 function classNames(...classes) {
@@ -13,11 +14,10 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [navigation, setNavigation] = useState([
-    { name: "Home", to: "/", current: true },
-    { name: "Product", to: "/products", current: false },
-    { name: "About", to: "/about", current: false },
-    { name: "Blog", to: "/blog", current: false },
-    { name: "My order", to: "/my-order", current: false },
+    { name: 'Home', to: '/', current: true },
+    { name: 'Product', to: '/products', current: false },
+    { name: 'About', to: '/about', current: false },
+    { name: 'Blog', to: '/blog', current: false },
   ]);
   const userId = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).id
@@ -39,8 +39,13 @@ export default function Navigation() {
   }, [location.pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+    localStorage.removeItem('user');
+    setTimeout(() => {
+      toast.info ('Loout :(');
+    }, 10);
+    setTimeout(() => {
+      navigate('/');
+    }, 1000);
   };
 
   return (
@@ -115,17 +120,11 @@ export default function Navigation() {
                   {showUserMenu ? (
                     // User is logged in, show user menu
                     <div className="flex items-center">
-                      <Link
-                        to="#"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                      >
+                      <Link to="/set-profile" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                         Your Profile
                       </Link>
-                      <Link
-                        to="#"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                      >
-                        Settings
+                      <Link to={`/my-order/${userId}`} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        My order
                       </Link>
                       <button
                         onClick={handleLogout}
@@ -133,6 +132,7 @@ export default function Navigation() {
                       >
                         Sign out
                       </button>
+                      <ToastContainer />
                     </div>
                   ) : (
                     // User is not logged in, show login, register, and forgot password links
@@ -185,6 +185,7 @@ export default function Navigation() {
           </Disclosure.Panel>
         </>
       )}
+   
     </Disclosure>
   );
 }
