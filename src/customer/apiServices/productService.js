@@ -3,7 +3,7 @@ import * as request from "../../utils/request";
 export const productService = async (trademark) => {
   try {
     const endpoint1 = trademark ? `products/brand/${trademark}` : "products";
-    const endpoint2 = trademark ? `trademark/${trademark}` : "1";
+    console.log(endpoint1);
     const dataproduct = await request.get(endpoint1);
     console.log(dataproduct);
     return dataproduct;

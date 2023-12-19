@@ -317,7 +317,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </section>
-      <Review />
+      <Review data={product} />
     </div>
   );
 };
