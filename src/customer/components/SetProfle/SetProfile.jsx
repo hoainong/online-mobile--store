@@ -6,6 +6,21 @@ const SetProfile = () => {
     const [account,setAccount] = useState({});
     const navigate = useNavigate();
     const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+
+    const [newPassword, setNewPassword] = useState('');
+
+    const [isDivVisible, setIsDivVisible] = useState(false);
+  
+
+  
+    const handleNewPasswordChange = (event) => {
+      setNewPassword(event.target.value);
+    };
+  
+  
+    const handleCheckPassword = () => {
+        setIsDivVisible(!isDivVisible); 
+      };
     const fetchAccount = async () => {
         try {
             const data = await accountService(userId);
@@ -73,6 +88,12 @@ const SetProfile = () => {
                                     type="text" name="" placeholder="Redirect" value={account.email}/>
                             </div>
                             <div className="px-4 mb-6">
+                                <label className="block mb-2 text-sm font-medium dark:text-gray-400"> Phone Number</label>
+                                <input
+                                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
+                                    type="text" name="" placeholder="Redirect" value={account.email}/>
+                            </div>
+                            <div className="px-4 mb-6">
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-400"> Photo
                                 </label>
                                 <div className="flex items-center mt-1">
@@ -88,13 +109,30 @@ const SetProfile = () => {
                                         className="px-3 py-2 ml-5 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded shadow-sm dark:hover:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:bg-gray-600 hover:bg-gray-100 ">Change</button>
                                 </div>
                             </div>
-                            <div className="px-4 mb-6">
-                                <label className="block mb-2 text-sm font-medium dark:text-gray-400">Remark</label>
-                                <textarea
-                                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
-                                    name="field-name" rows="5" placeholder="Write something..."></textarea>
-                            </div>
-                            <div className="px-4 ">
+                            <button
+                                type="button"
+                                className="inline-block px-6 py-2.5 mb-6 bg-blue-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-600 hover:shadow-lg"
+                                onClick={handleCheckPassword}
+                            >
+                                Change Password
+                            </button>
+                                                    {/* Hiển thị ô nhập mật khẩu mới nếu mật khẩu hiện tại đúng */}
+                            {isDivVisible && (
+                                <div>
+                                <div className="px-4 mb-6">
+                                    <label className="block mb-2 text-sm font-medium dark:text-gray-400"> New Password</label>
+                                    <input
+                                    className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 hover:border-blue-500 focus:outline-none focus:ring focus:border-blue-300"
+                                    type="password"
+                                    name="newPassword"
+                                    placeholder="Enter new password"
+                                    value={newPassword}
+                                    onChange={handleNewPasswordChange}
+                                    />
+                                </div>
+                                </div>
+                                )}
+                                                    <div className="px-4 ">
                                 <div className="flex ">
                                     <button type="button"
                                         className="inline-block px-6 py-2.5 bg-blue-500  text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-600 hover:shadow-lg ">Submit</button>

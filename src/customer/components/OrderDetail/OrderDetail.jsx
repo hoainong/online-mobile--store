@@ -24,25 +24,22 @@ const OrderDetail = () => {
     const fetchCartCheckout = async () => {
         try {
           const formData = new FormData();
-            
+              
           formData.append("amount", amount);
           formData.append("orderId", id);
-      
+        
           const response = await axios.post("http://localhost:8080/payment/vnpayajax", formData);
-    
-          return response.data;
           
+          return response.data; 
         } catch (error) {
           console.error("Error processing payment:", error);
-  
           return { error: "Error processing payment" };
         }
       };
       
       const handlePay = async () => {
         try {
-          const payResult = await fetchCartCheckout();
-          console.log(payResult)
+          const payResult = await fetchCartCheckout(); // Gọi hàm fetchCartCheckout để nhận được giá trị từ response.data
           window.location.href = payResult;
         } catch (error) {
           console.error("Error handling payment:", error);
@@ -50,12 +47,12 @@ const OrderDetail = () => {
       };
       
       
+      
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) {
           navigate('/login');
         } else {
-        
             fetchOrderDetails();
         }
       }, [id, navigate]);
