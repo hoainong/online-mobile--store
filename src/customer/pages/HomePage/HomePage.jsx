@@ -8,7 +8,6 @@ import HomeCategory from '../../components/HomeCategory/HomeCategory';
 import  { ProductService,ProductFlashSaleService } from '../../apiServices/homeService';
 
 
-
 const HomePage = () => {
   const [brandsData, setBrandsData] = useState([
     { id: 1, name: 'Iphone', data: [] },
@@ -36,7 +35,6 @@ const HomePage = () => {
     fetchDataForAllBrands();
   }, []);
 
-  // Fetch data for flash sale
   const [productSale, setProductSale] = useState([]);
 
   useEffect(() => {
