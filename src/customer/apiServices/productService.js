@@ -22,3 +22,13 @@ export const productDetailService = async (id) => {
     throw error;
   }
 };
+
+export const productDetailCategoryService = async (idProduct) => {
+  try {
+    const endpoint = `product-detail/category/${idProduct}`;
+    const res = await request.get(endpoint);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -30,9 +30,4 @@ export const homeCategoryData = [
     logo: logoOppo,
     name: "Oppo",
   },
-  {
-    id: 6,
-    logo: logoKhac,
-    name: "Xem Thêm",
-  },
 ];

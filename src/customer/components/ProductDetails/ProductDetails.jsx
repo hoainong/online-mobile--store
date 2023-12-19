@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { productDetailService } from "../../apiServices/productService";
+import {
+  productDetailCategoryService,
+  productDetailService,
+} from "../../apiServices/productService";
 import Review from "./Review";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState([]);
+  const [productToCategory, setProductToCategory] = useState([]);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -12,6 +16,27 @@ const ProductDetails = () => {
   const isProductAvailable = product.quantity > 0;
   const isProductState = product.state;
   const isDiscount = product?.discount;
+  const [listColor, setListColor] = useState([]);
+  const [uniqueRoms, setUniqueRoms] = useState([]);
+  useEffect(() => {
+    const uniqueRomsArray = [
+      ...new Set(productToCategory?.map((item) => item?.rom)),
+    ].map((rom) => {
+      return productToCategory.find((item) => item.rom === rom);
+    });
+    setUniqueRoms(uniqueRomsArray);
+  }, [productToCategory]);
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const listCate = await productDetailCategoryService(id);
+        setProductToCategory(listCate);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      }
+    };
+    fetchApi();
+  }, []);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -22,15 +47,48 @@ const ProductDetails = () => {
         console.error("Error fetching product data:", error);
       }
     };
-
     fetchApi();
   }, [id]);
-
   useEffect(() => {
     if (product?.images?.length > 0) {
       setSelectedImage(product.images[0]);
     }
   }, [product]);
+  useEffect(() => {
+    const lstMau = [];
+    productToCategory.map((pro) => {
+      if (product?.rom === pro?.rom) {
+        lstMau.push({ color: pro?.color });
+      }
+    });
+    setListColor(lstMau);
+  }, [product, productToCategory]);
+
+  const handleChooseROM = (rom) => {
+    const lstMau = [];
+    const lstPRO = [];
+    productToCategory.map((pro) => {
+      if (rom === pro?.rom) {
+        lstMau.push({ color: pro?.color });
+        lstPRO.push(pro);
+      }
+    });
+    setListColor(lstMau);
+    setProduct(lstPRO[0]);
+  };
+  const handleChooseColor = (color) => {
+    if (!product) {
+      return;
+    }
+    const productFind = productToCategory.find(
+      (pro) => pro.color === color && pro.rom === product?.rom
+    );
+    if (productFind) {
+      setProduct(productFind);
+    } else {
+      console.log(`Không tìm thấy sản phẩm với màu ${color}`);
+    }
+  };
 
   const handleImageClick = (img) => {
     setSelectedImage(img);
@@ -150,35 +208,53 @@ const ProductDetails = () => {
                   </p>
                 </div>
                 <div className="mb-8">
-                  <h2 className="w-16 pb-1 mb-4 text-2xl font-bold border-b border-blue-300 dark:text-gray-400 dark:border-gray-600">
-                    <span className="mr-2">Color:</span>
-                    <span className="capitalize whitespace-nowrap">
-                      {product.color}
-                    </span>
-                  </h2>
-                </div>
-                <div className="mb-8">
-                  <h2 className="w-16 pb-1 mb-4 text-xl font-semibold border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">
-                    RAM
-                  </h2>
-                  <div class="flex flex-wrap -mb-2">
-                    <button class="px-4 py-2 mb-2 mr-4 font-semibold border rounded-md hover:border-blue-400 dark:border-gray-400 hover:text-blue-600 dark:hover:border-gray-300 dark:text-gray-400">
-                      {product?.ram}
-                    </button>
-                  </div>
-                  <div></div>
-                </div>
-                <div className="mb-8">
                   <h2 className="w-16 pb-1 mb-6 text-xl font-semibold border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">
                     Storage
                   </h2>
                   <div>
                     <div class="flex flex-wrap -mb-2">
-                      <button class="px-4 py-2 mb-2 mr-4 font-semibold border rounded-md hover:border-blue-400 dark:border-gray-400 hover:text-blue-600 dark:hover:border-gray-300 dark:text-gray-400">
-                        {product?.rom}
-                      </button>
+                      {uniqueRoms?.map((item, index) => (
+                        <button
+                          key={index}
+                          className={`px-4 py-2 mb-2 mr-4 font-semibold border rounded-md ${
+                            item?.rom === product?.rom
+                              ? "border-blue-400 text-blue-600"
+                              : "border-gray-400 text-gray-400"
+                          } hover:border-blue-400 dark:border-gray-400 hover:text-blue-600 dark:hover:border-gray-300 dark:text-gray-400`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleChooseROM(item?.rom);
+                          }}
+                        >
+                          {item?.rom}
+                        </button>
+                      ))}
                     </div>
                   </div>
+                </div>
+                <div className="mb-8">
+                  <h2 className="w-16 pb-1 mb-4 text-xl font-semibold border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">
+                    Color
+                  </h2>
+                  <div className="flex flex-wrap -mb-2">
+                    {listColor?.map((item, index) => (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleChooseColor(item?.color);
+                        }}
+                        key={index}
+                        className={`px-4 py-2 mb-2 mr-4 font-semibold border rounded-md ${
+                          item?.color === product?.color
+                            ? "border-blue-400 text-blue-600"
+                            : "border-gray-400 text-gray-400"
+                        } hover:border-blue-400 dark:border-gray-400 hover:text-blue-600 dark:hover:border-gray-300 dark:text-gray-400`}
+                      >
+                        {item?.color}
+                      </button>
+                    ))}
+                  </div>
+                  <div></div>
                 </div>
                 <div className="flex flex-wrap items-center gap-4">
                   <button
