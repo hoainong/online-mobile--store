@@ -58,7 +58,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="md:w-96 mx-auto ">
+    <div className="md:w-200 mx-auto">
       <div className="relative flex w-full flex-wrap items-stretch">
         <Autosuggest
           id="search"
@@ -74,8 +74,11 @@ const SearchBar = () => {
           class="bg-gray-500 hover:bg-blue-500 text-white py-2 px-2 my-2 rounded"
           onClick={(e) => {
             e.preventDefault();
-            console.log(value);
-            navigate(`products/search/${value}`);
+            if (value && value !== "") {
+              navigate(`products/search/${value}`);
+            } else {
+              navigate(`products`);
+            }
           }}
         >
           Search
