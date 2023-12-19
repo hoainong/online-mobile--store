@@ -31,7 +31,7 @@ export const homeCategoryData = [
     name: "Oppo",
   },
   {
-    id: 5,
+    id: 6,
     logo: logoLenovo,
     name: "Lenovo",
   },
