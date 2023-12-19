@@ -17,7 +17,7 @@ const HomePage = () => {
     { id: 3, name: "Xiaome", data: [] },
     { id: 4, name: "Realme", data: [] },
     { id: 5, name: "Oppo", data: [] },
-    { id: 6, name: "Lenovo", data: [] },
+    { id: 6, name: "Vivo", data: [] },
   ]);
 
   useEffect(() => {
