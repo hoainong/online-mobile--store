@@ -14,7 +14,7 @@ const HomePage = () => {
     { id: 1, name: 'Iphone', data: [] },
     { id: 2, name: 'Samsung', data: [] },
     { id: 3, name: 'Xiaome', data: [] },
-    { id: 4, name: 'Oppo', data: [] },
+    { id: 15, name: 'Oppo', data: [] },
     { id: 5, name: 'Readme', data: [] }
   ]);
 

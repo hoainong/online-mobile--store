@@ -1,72 +1,101 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { cartService, discountService } from '../../apiServices/cartSerivce';
+import { cartService, discountService, paymentService } from '../../apiServices/cartSerivce';
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = () => {
     const [cartDetails, setCartDetails] = useState([]);
     const [discounts, setDiscounts] = useState([]);
+  
     const { id } = useParams();
     const navigate = useNavigate();
-
-    const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
-
-    const fetchCartDetails = async () => {
-        try {
-            const data = await cartService(id);
-            setCartDetails(data);
-        } catch (error) {
-            console.error("Error fetching product data:", error);
-        }
-    };
-    const fetchDiscounts = async () => {
-        try {
-            const disc = await discountService(id);
-            setDiscounts(disc)
-        } catch (error) {
-            console.error("Error fetching discounts:", error);
-        }
-    };
     
-    const updateQuantity = async (cartId, cartItemId, newQuantity) => {
-        try {
-            await fetch(`http://localhost:8080/api/cart/update-quantity/${cartId}/${cartItemId}/${newQuantity}`, {
-                method: 'POST',
-            });
-            fetchCartDetails();
-            fetchDiscounts();
-        } catch (error) {
-            console.error('Error updating quantity:', error);
-        }
-    };
-
-
-    const handleDeleteCartItem = async (cartItemId) => {
-        try {
-            await fetch(`http://localhost:8080/api/cart/delete-cartitem/${cartItemId}`, {
-                method: 'DELETE',
-            });
-            fetchCartDetails();
-            fetchDiscounts();
-        } catch (error) {
-            console.error('Error deleting cart item:', error);
-        }
-    };
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-            navigate('/login'); 
-        } else {
-            fetchCartDetails();
-            fetchDiscounts();
-        }
-    }, [id, navigate]);
-
-
   
+    const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
+  
+    const fetchCartDetails = async () => {
+      try {
+        const data = await cartService(id);
+        setCartDetails(data);
+      } catch (error) {
+        console.error("Error fetching cart details:", error);
+      }
+    };
+  
+    const fetchDiscounts = async () => {
+      try {
+        const disc = await discountService(id);
+        setDiscounts(disc);
+      } catch (error) {
+        console.error("Error fetching discounts:", error);
+      }
+    };
+  
+    const updateQuantity = async (cartId, cartItemId, newQuantity) => {
+      try {
+        await fetch(`http://localhost:8080/api/cart/update-quantity/${cartId}/${cartItemId}/${newQuantity}`, {
+          method: 'POST',
+        });
+        fetchCartDetails();
+        fetchDiscounts();
+      } catch (error) {
+        console.error('Error updating quantity:', error);
+      }
+    };
+  
+    const handleDeleteCartItem = async (cartItemId) => {
+      try {
+        await fetch(`http://localhost:8080/api/cart/delete-cartitem/${cartItemId}`, {
+          method: 'DELETE',
+        });
+        fetchCartDetails();
+        fetchDiscounts();
+      } catch (error) {
+        console.error('Error deleting cart item:', error);
+      }
+    };
+  
+    const handlePayment = async () => {
+      try {
+        await fetchPayment();
+        fetchCartDetails();
+        setTimeout(() => {
+          toast.success("Order Success");
+        }, 10);
+        setTimeout(() => {
+          navigate(`/my-order/${id}`);
+        }, 2000);
+       
+      } catch (error) {
+        console.error("Error handling payment:", error);
+      }
+    };
+
+    const fetchPayment = async () => {
+        try {
+            const pay = await paymentService(id);
+          } catch (error) {
+            console.error("Error fetching discounts:", error);
+          }
+    }
+
     
+  
+    useEffect(() => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        navigate('/login');
+      } else {
+        fetchCartDetails();
+        fetchDiscounts();
+      }
+    }, [id, navigate]);
+  
+
+
   return (
     <div>
        <section className="py-24 bg-gray-100 font-poppins dark:bg-gray-700">
@@ -174,15 +203,9 @@ const Cart = () => {
                                 <div>
                                     <span className="text-gray-700 dark:text-gray-400">{discount.name}</span>
                                     <span className="text-xl ml-3 mr-3 font-bold text-red-700 dark:text-gray-400">
-                                        -{discount.percent} %
+                                        -{discount.percent} % OF {discount.nameProduct}
                                     </span>
                                 </div>
-                                <button 
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md
-                                 hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-                                >
-                                    Apply
-                                </button>
                             </div>
                         ))}
                     </div>
@@ -211,31 +234,24 @@ const Cart = () => {
                                     }
                                 </span>
                             </div>
-                            <h2 className="text-lg text-gray-500 dark:text-gray-400">We offer:</h2>
-                            <div className="flex items-center gap-2 mb-4 ">
-                                <a href="#">
-                                    <img src="https://i.postimg.cc/g22HQhX0/70599-visa-curved-icon.png" alt=""
-                                        className="object-cover h-16 w-26"/>
-                                </a>
-                                <a href="#">
-                                    <img src="https://i.postimg.cc/HW38JkkG/38602-mastercard-curved-icon.png" alt=""
-                                        className="object-cover h-16 w-26"/>
-                                </a>
-                                <a href="#">
-                                    <img src="https://i.postimg.cc/HL57j0V3/38605-paypal-straight-icon.png" alt=""
-                                        className="object-cover h-16 w-26"/>
-                                </a>
-                            </div>
+
                             <div className="flex items-center justify-between ">
                                 <button
-                                    className="block w-full py-4 font-bold text-center text-gray-100 uppercase bg-blue-500 rounded-md hover:bg-blue-600">Checkout</button>
+                                    className="block w-full ml-2
+                                    py-4 font-bold text-center
+                                    text-gray-100 uppercase
+                                    bg-green-500 rounded-md
+                                    hover:bg-green-600"
+                                    onClick={(e) => {e.preventDefault();handlePayment();}}>Payment
+                                </button>
+                                <ToastContainer />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        </section>
     </div>
   )
 }
