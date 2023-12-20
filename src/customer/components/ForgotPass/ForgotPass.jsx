@@ -24,7 +24,7 @@ const ForgotPasswordEmail = () => {
 
                 setTimeout(() => {
                     toast.success('Check captcha in your email');
-                }, 10);
+                }, 2000);
                 navigate('/reset-password');
 
 

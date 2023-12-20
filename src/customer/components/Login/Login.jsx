@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoginByGoogle from "../LoginByGoogle/login";
+import { gapi } from 'gapi-script'
 
+
+const clientId = "1018686024516-ol8odmqsipcrjoddf224oi8hn5hav80m.apps.googleusercontent.com";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ""
+      })
+    };
+    gapi.load('client:auth2', start);
+  });
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
@@ -45,7 +60,11 @@ const Login = () => {
     } catch (error) {
       console.error("Error during login:", error);
     }
+
   };
+
+
+
 
   return (
     <section className="font-poppins h-screen flex my-10">
@@ -125,7 +144,7 @@ const Login = () => {
                   </div>
                   <div className="mt-4 text-right">
                     <a
-                      href="#"
+                      href="/forgot-password"
                       className="text-sm font-semibold text-blue-700 dark:text-blue-300 hover:underline"
                     >
                       Forgot password?
@@ -142,11 +161,16 @@ const Login = () => {
                       {error}
                     </div>
                   )}
+                  <div>
+                    <p style={{ marginBottom: '10px' }}>Or with:</p>
+
+                    <LoginByGoogle />
+                  </div>
                   <ToastContainer />
                   <p className="mt-8 text-gray-700 dark:text-gray-400">
                     Need an account?
                     <a
-                      href="#"
+                      href="/register"
                       className="font-semibold text-blue-400 hover:text-blue-600"
                     >
                       Create an account
