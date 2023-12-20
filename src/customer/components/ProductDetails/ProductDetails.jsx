@@ -113,23 +113,38 @@ const ProductDetails = () => {
   return (
     <div>
       <section className="overflow-hidden bg-white py-11 font-poppins dark:bg-gray-800">
-      <div className="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
-        <div className="flex flex-wrap -mx-4">
-          <div className="w-full mb-8 md:w-1/2 md:mb-0">
-
-            <div className="sticky top-0 z-50 overflow-hidden">
-              <div className="relative mb-6 lg:mb-10 lg:h-2/4">
-                <img src={selectedImage || (product?.images?.length > 0 && product.images[0])} alt="" className="object-cover w-full lg:h-full" />
-              </div>
-              <div className="flex-wrap hidden md:flex">
-                {product?.images?.map((img, i) => (
-                  <div
-                    key={i}
-                    className={`w-1/2 p-2 sm:w-1/4 ${selectedImage === img ? 'border border-blue-300 hover:border-blue-300' : ''}`}
-                    onClick={() => handleImageClick(img)}
-                  >
-                    <div className="block">
-                      <img src={img} alt="" className="object-cover w-full lg:h-20" />
+        <div className="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
+          <div className="flex flex-wrap -mx-4">
+            <div className="w-full mb-8 md:w-1/2 md:mb-0">
+              <div className="sticky top-0 z-50 overflow-hidden">
+                <div className="relative mb-6 lg:mb-10 lg:h-2/4">
+                  <img
+                    src={
+                      selectedImage ||
+                      (product?.images?.length > 0 && product.images[0]) || undefined
+                    }
+                    alt=""
+                    className="object-cover w-full lg:h-full"
+                  />
+                </div>
+                <div className="flex-wrap hidden md:flex">
+                  {product?.images?.map((img, i) => (
+                    <div
+                      key={i}
+                      className={`w-1/2 p-2 sm:w-1/4 ${
+                        selectedImage === img
+                          ? "border border-blue-300 hover:border-blue-300"
+                          : ""
+                      }`}
+                      onClick={() => handleImageClick(img)}
+                    >
+                      <div className="block">
+                        <img
+                          src={img}
+                          alt=""
+                          className="object-cover w-full lg:h-20"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -170,7 +185,31 @@ const ProductDetails = () => {
                         {product?.ram}
                     </button>
                 </div>
-                <div>
+
+                <div className="mb-8">
+                  <h2 className="w-16 pb-1 mb-6 text-xl font-semibold border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">
+                    Storage
+                  </h2>
+                  <div>
+                    <div className="flex flex-wrap -mb-2">
+                      {uniqueRoms?.map((item, index) => (
+                        <button
+                          key={index}
+                          className={`px-4 py-2 mb-2 mr-4 font-semibold border rounded-md ${
+                            item?.rom === product?.rom
+                              ? "border-blue-400 text-blue-600"
+                              : "border-gray-400 text-gray-400"
+                          } hover:border-blue-400 dark:border-gray-400 hover:text-blue-600 dark:hover:border-gray-300 dark:text-gray-400`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleChooseROM(item?.rom);
+                          }}
+                        >
+                          {item?.rom}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="mb-8">
