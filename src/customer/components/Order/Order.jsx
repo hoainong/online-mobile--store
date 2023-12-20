@@ -68,7 +68,7 @@ const Order = () => {
                 <h2 className="font-bold text-gray-500 dark:text-gray-400">Date</h2>
               </div>
               <div className="w-auto px-4 md:w-1/6 lg:w-2/12 ">
-                <select value={selectedState} onChange={handleStateChange}>
+                <select value={selectedState || undefined} onChange={handleStateChange}>
                   <option value={null}>All</option>
                   <option value={1}>Đang xử lý</option>
                   <option value={2}>Chờ giao hàng</option>

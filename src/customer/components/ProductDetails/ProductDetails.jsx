@@ -185,7 +185,7 @@ const ProductDetails = () => {
                   <img
                     src={
                       selectedImage ||
-                      (product?.images?.length > 0 && product.images[0])
+                      (product?.images?.length > 0 && product.images[0]) || undefined
                     }
                     alt=""
                     className="object-cover w-full lg:h-full"
@@ -248,7 +248,7 @@ const ProductDetails = () => {
                     Storage
                   </h2>
                   <div>
-                    <div class="flex flex-wrap -mb-2">
+                    <div className="flex flex-wrap -mb-2">
                       {uniqueRoms?.map((item, index) => (
                         <button
                           key={index}
