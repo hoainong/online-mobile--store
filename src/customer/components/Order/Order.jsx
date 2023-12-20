@@ -91,7 +91,7 @@ const Order = () => {
                 <h2 className="font-bold text-gray-500 dark:text-gray-400"> Total</h2>
               </div>
             </div>
-            <div className="py-4 mb-8 border-t border-b border-gray-200 dark:border-gray-700">
+            <div className="py-4 mb-8 border-t border-b border-gray-200 dark:border-gray-700 max-h-[500px] overflow-y-auto">
               {filteredOrders?.length > 0 ? (
                 filteredOrders.map((order) => (
                   <div key={order.id} className="flex flex-wrap items-center mb-6 -mx-4 md:mb-8">

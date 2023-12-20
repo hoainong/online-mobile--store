@@ -1,17 +1,42 @@
 import { Rating } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import { commentService } from '../../apiServices/productService';
 
 const Review = ({data}) => {
+    const [comment, setComment] = useState('');
+    const [rate, setRate] = useState(0);
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user ? user.id : null;
+    
+
+    const handleCommentChange = (event) => {
+      setComment(event.target.value);
+    };
+    const handleRate = (event) => { 
+        setRate(event.target.value);
+    }
     let averageRate;
-if (data.previews && data.previews.length > 0) {
-    const totalRate = data.previews.reduce((acc, preview) => acc + preview.rate, 0);
+    if (data?.previews && data.previews?.length > 0) {
+    const totalRate = data.previews?.reduce((acc, preview) => acc + preview.rate, 0);
     averageRate =Math.round(totalRate / data.previews.length);
-    console.log("Giá trị trung bình của preview.rate:", averageRate);
   } else {
     console.log("Không có dữ liệu hoặc mảng previews rỗng.");
   }
+  const fetchComent = async () => {
+    try {
+        const cmt = await commentService(rate, comment, userId, data?.id);
+        console.log("Comment success:", cmt);
+    } catch (error) {
+        console.error("Error fetching:", error);
+    }
+};
+const handleSubmit =(event)=>{
+    
+    fetchComent();
+    console.log("Submit success:");
+}
   
   return (
     <section className="flex items-center py-16 bg-gray-100 font-poppins dark:bg-gray-800 ">
@@ -37,28 +62,39 @@ if (data.previews && data.previews.length > 0) {
                         Leave a comment</h2>
                     <form action="" className="">
                         <div className="mb-6 ">
-                            <input type="text" placeholder="your email" required=""
-                                className="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-100 border rounded dark:placeholder-gray-500 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-800 "/>
-                        </div>
-                        <div className="mb-6 ">
-                            <textarea type="message" placeholder="write a comment" required=""
-                                className="block w-full px-4 leading-tight text-gray-700 bg-gray-100 border rounded dark:placeholder-gray-500 py-7 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-800 "></textarea>
+                        <Rating
+                            className='ml-4'
+                            name="read-only"
+                            value={rate}
+                            onChange={handleRate}
+                            readOnly={false}
+                            />
+
+                        <textarea
+                            type="message"
+                            placeholder="write a comment"
+                            required=""
+                            value={comment}
+                            onChange={handleCommentChange}
+                            className="block w-full px-4 leading-tight text-gray-700 bg-gray-100 border rounded dark:placeholder-gray-500 py-7 dark:text-gray-400 dark:border-gray-800 dark:bg-gray-800"
+                        ></textarea>
                         </div>
                         <div className="">
-                            <button
+                           {userId?<button
+                             onClick={handleSubmit}
                                 className="px-4 py-2 text-xs font-medium text-gray-100 bg-blue-500 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-700">
                                 Submit comment
-                            </button>
+                            </button>:"" } 
                         </div>
                     </form>
                 </div>
             </div>
-            <div className="p-6 dark:bg-gray-900 bg-gray-50">
+            <div className="p-6 dark:bg-gray-900 bg-gray-50 max-h-[400px] overflow-y-auto">
                 {data.previews?.map((item, index) => (
                     <div className="flex flex-wrap items-center mb-4 space-x-2" key={index}>
                     <div className="flex self-start flex-shrink-0 cursor-pointer">
                         <img
-                        src={item.imageUrl != null ? item.imageUrl : "https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png"}
+                        src={item?.imageUrl != null ? item?.imageUrl : "https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png"}
                         alt=""
                         className="object-fill w-16 h-16 rounded-full"
                         />
@@ -68,11 +104,11 @@ if (data.previews && data.previews.length > 0) {
                         <div className="w-auto px-2 pb-2">
                             <div className="font-medium">
                             <div className="text-lg font-semibold dark:text-gray-400 hover:underline">
-                                <small>{item.userName} </small> <Rating className='ml-4' name="read-only" value={item.rate?item.rate:''} readOnly />
+                                <small>{item?.userName} </small> <Rating className='ml-4' name="read-only" value={item?.rate?item.rate:''} readOnly />
                             </div>
                             </div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                            {item.content}
+                            {item?.content}
                             </div>
                         </div>
                         <div className="flex items-center justify-start w-full text-xs">
@@ -83,7 +119,12 @@ if (data.previews && data.previews.length > 0) {
                             </div>
                             <span className="self-center">.</span>
                             <div className="hover:underline">
-                                <span>{format(parseISO(item.createDate), 'dd/MM/yyyy HH:mm:ss')}</span>
+                            <span>
+                                {item && item.createDate && (
+                                    format(parseISO(item.createDate), 'dd/MM/yyyy HH:mm:ss')
+                                )}
+                                </span>
+
                             </div>
                             </div>
                         </div>
@@ -106,7 +147,9 @@ if (data.previews && data.previews.length > 0) {
                                         <span className="self-center">.</span>
                                         <span className="self-center">.</span>
                                         <div className="hover:underline">
-                                            <span>{format(parseISO(rep.createDate), 'dd/MM/yyyy HH:mm:ss')}</span>
+                                             {rep && rep.createDate && (
+                                    format(parseISO(rep.createDate), 'dd/MM/yyyy HH:mm:ss')
+                                )}
                                         </div>
                                         </div>
                                     </div>
@@ -118,7 +161,7 @@ if (data.previews && data.previews.length > 0) {
                     </div>
                     </div>
                 ))}
-                </div>
+            </div>
 
         </div>
     </section>
