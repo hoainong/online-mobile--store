@@ -41,6 +41,7 @@ export const productDetailCategoryService = async (idProduct) => {
     throw error;
   }
 };
+
 export const productSearchService = async (searchKey) => {
   try {
     const endpoint1 = searchKey ? `products/search/${searchKey}` : "products";
@@ -53,3 +54,14 @@ export const productSearchService = async (searchKey) => {
     throw error;
   }
 };
+
+    export const commentService = async (rate, content, idUser, idProduct) => {
+      try {
+          const endpoint = 'products/comment';
+  
+          const res = await request.post(endpoint, { rate, content, idUser, idProduct });
+          return res;
+      } catch (error) {
+          throw error;
+      }
+  };

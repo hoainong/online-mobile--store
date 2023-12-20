@@ -27,12 +27,11 @@ const OrderDetail = () => {
 
   const fetchCartCheckout = async () => {
     try {
-      console.log(id);
       const formData = new FormData();
       formData.append("amount", amount);
       formData.append("orderId", id);
       const response = await axios.post(
-        "http://localhost:8080/payment/vnpayajax",
+        "http://localhost:8080/api/vnpayajax",
         formData
       );
       return response.data;

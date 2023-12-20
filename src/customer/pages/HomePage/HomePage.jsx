@@ -3,12 +3,12 @@ import MainCarousel from "../../components/HomeCarousel/MainCarousel";
 import HomeFlashSaleCarousel from "../../components/HomeFlashSaleCarousel/HomeFlashSaleCarousel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import HomeSelectionCarousel from "../../components/HomeSelectionCarousel/HomeSelectionCarousel";
-import HomeCategory from "../../components/HomeCategory/HomeCategory";
-import {
-  ProductService,
-  ProductFlashSaleService,
-} from "../../apiServices/homeService";
+
+import HomeSelectionCarousel from '../../components/HomeSelectionCarousel/HomeSelectionCarousel';
+import HomeCategory from '../../components/HomeCategory/HomeCategory';
+import  { ProductService,ProductFlashSaleService } from '../../apiServices/homeService';
+
+
 
 const HomePage = () => {
   const [brandsData, setBrandsData] = useState([
@@ -38,7 +38,6 @@ const HomePage = () => {
     fetchDataForAllBrands();
   }, []);
 
-  // Fetch data for flash sale
   const [productSale, setProductSale] = useState([]);
 
   useEffect(() => {
