@@ -120,7 +120,7 @@ const SetProfile = () => {
                                     <input
                                         onChange={(e) => setAddress(e.target.value)}
                                         className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
-                                        type="text" name="address" placeholder="Enter a name" value={address} />
+                                        type="text" name="address" placeholder="Enter a adress" value={address} />
                                 </div>
                                 <div className="px-4 mb-6">
                                     <label className="block mb-2 text-sm font-medium dark:text-gray-400"> Email</label>
