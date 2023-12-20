@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Disclosure} from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import logoOMS from '../../static/images/logo/header__logophone.png';
@@ -7,12 +7,16 @@ import { TERipple } from 'tw-elements-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import SearchBar from "./Search/SearchBar";
+import { useGoogleLogout } from 'react-google-login';
+
+const clientId = "1018686024516-ol8odmqsipcrjoddf224oi8hn5hav80m.apps.googleusercontent.com";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navigation() {
+  const [loggedOut, setLoggedOut] = useState(false);
   const [navigation, setNavigation] = useState([
     { name: 'Home', to: '/', current: true },
     { name: 'Product', to: '/products', current: false },
@@ -40,13 +44,21 @@ export default function Navigation() {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    setLoggedOut(true);
     setTimeout(() => {
-      toast.info ('Loout :(');
+      toast.info('Loout :(');
     }, 10);
     setTimeout(() => {
-      navigate('/');
+      window.location.href = '/login';
     }, 1000);
   };
+  const { signOut } = useGoogleLogout({
+    clientId,
+    onLogoutSuccess: handleLogout,
+  });
+
+
+
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -126,12 +138,16 @@ export default function Navigation() {
                       <Link to={`/my-order/${userId}`} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                         My order
                       </Link>
+
                       <button
-                        onClick={handleLogout}
                         className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                        onClick={signOut}
                       >
-                        Sign out
+                        Logout
                       </button>
+
+
+
                       <ToastContainer />
                     </div>
                   ) : (
@@ -184,8 +200,9 @@ export default function Navigation() {
             </div>
           </Disclosure.Panel>
         </>
-      )}
-   
-    </Disclosure>
+      )
+      }
+
+    </Disclosure >
   );
 }
