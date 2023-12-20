@@ -48,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <section className="font-poppins h-screen flex ">
+    <section className="font-poppins h-screen flex my-10">
       <div className="max-w-6xl px-1 mx-auto lg:px-6 ">
         <div className="flex flex-col items-center h-full justify-center md:flex-row">
           <div className="flex flex-wrap items-center  bg-gray-100 shadow-lg dark:bg-gray-900 my-7 ">

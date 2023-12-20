@@ -22,8 +22,12 @@ export default function Product({ data, trademark }) {
   const itemsCategory = homeCategoryData;
   const render = useEffect(() => {
     setDataProduct(data);
-    const nameCate = itemsCategory.find((item) => item.id == trademark)?.name;
-    setNameCategory(nameCate);
+    if (trademark) {
+      const nameCate = itemsCategory.find((item) => item.id == trademark)?.name;
+      setNameCategory(nameCate);
+    } else {
+      setNameCategory("Categories");
+    }
   }, [data]);
   const sortOptions = [
     { name: "Tăng theo giá", category: "Price", type: true },
