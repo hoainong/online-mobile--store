@@ -71,7 +71,7 @@ const SearchBar = () => {
           inputProps={inputProps}
         />
         <button
-          class="bg-gray-500 hover:bg-blue-500 text-white py-2 px-2 my-2 rounded"
+          className="bg-gray-500 hover:bg-blue-500 text-white py-2 px-2 my-2 rounded"
           onClick={(e) => {
             e.preventDefault();
             if (value && value !== "") {
