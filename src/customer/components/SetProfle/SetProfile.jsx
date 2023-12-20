@@ -52,14 +52,15 @@ const SetProfile = () => {
     const fetchAccount = async () => {
         try {
             const data = await accountService(userId);
-            setAccount(data);
-            if (Object.keys(data).length !== 0) {
-                setFullName(data.fullName);
-                setAddress(data.address);
-                setEmail(data.email);
-                setBirthDay(data.birthDay);
-                setPhoneNumber(data.phoneNumber);
+                setAccount(data);
+                if (Object.keys(data).length !== 0) {
+                    setFullName(data.fullName);
+                    setAddress(data.address);
+                    setEmail(data.email);
+                    setBirthDay(data.birthDay);
+                    setPhoneNumber(data.phoneNumber);
             }
+            
 
         } catch (error) {
             console.error("Error fetching account data:", error);
@@ -92,7 +93,7 @@ const SetProfile = () => {
                                     <input
                                         onChange={(e) => setFullName(e.target.value)}
                                         className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
-                                        type="text" name="fullName" placeholder="Enter a name" value={fullName} />
+                                        type="text" name="fullName" placeholder="Enter a name" value={fullName || ""} />
                                 </div>
                                 <div className="flex flex-wrap items-center">
                                     <div className="w-full px-4 mb-6 lg:w-2/4">
@@ -102,39 +103,39 @@ const SetProfile = () => {
                                                 className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                                 <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
                                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
+                                                    <path fillRule="evenodd"
                                                         d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                        clip-rule="evenodd"></path>
+                                                        clipRule="evenodd"></path>
                                                 </svg>
                                             </div>
                                             <input type="date"
                                                 onChange={(e) => setBirthDay(e.target.value)}
                                                 className="border  rounded text-gray-900 sm:text-sm focus:outline-none dark:text-gray-400 dark:placeholder-gray-500 block w-full pl-10 p-2.5 dark:bg-gray-800 dark:border-gray-800 "
-                                                name="birthDay" placeholder="Select date" value={birthDay} />
+                                                name="birthDay" placeholder="Select date" value={birthDay || ""} />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="px-4 mb-6">
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                        for="file_input">Address</label>
+                                        htmlFor="file_input">Address</label>
                                     <input
                                         onChange={(e) => setAddress(e.target.value)}
                                         className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
-                                        type="text" name="address" placeholder="Enter a adress" value={address} />
+                                        type="text" name="address" placeholder="Enter a name" value={address || ""} />
                                 </div>
                                 <div className="px-4 mb-6">
                                     <label className="block mb-2 text-sm font-medium dark:text-gray-400"> Email</label>
                                     <input
                                         onChange={(e) => setEmail(e.target.value)}
                                         className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
-                                        type="text" name="email" placeholder="Redirect" value={email} />
+                                        type="text" name="email" placeholder="Redirect" value={email || ""} />
                                 </div>
                                 <div className="px-4 mb-6">
                                     <label className="block mb-2 text-sm font-medium dark:text-gray-400"> Phone number</label>
                                     <input
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         className="block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded dark:text-gray-400 dark:placeholder-gray-500 dark:border-gray-800 dark:bg-gray-800"
-                                        type="text" name="phoneNumber" placeholder="Redirect" value={phoneNumber} />
+                                        type="text" name="phoneNumber" placeholder="Redirect" value={phoneNumber || ""} />
                                 </div>
                                 <div className="px-4 mb-6">
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-400"> Photo

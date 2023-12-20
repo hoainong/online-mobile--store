@@ -14,28 +14,36 @@ const Order = () => {
     setSelectedState(event.target.value);
   };
 
-  const filteredOrders = orders?.filter(order =>
-    selectedState == null || order.state == selectedState
-  );
+
   
 
   const fetchOrder = async () => {
     try {
       const data = await OrderService(id);
-      setOrders(data);
+      if (data) {
+        setOrders(data);
+      } else {
+        console.error("Invalid data received from OrderService");
+      }
     } catch (error) {
       console.error("Error fetching order data:", error);
     }
   };
+  
 
   const fetchCancelOrder = async (idOrder) => {
     try {
       const data = await cancelOrderService(idOrder);
-      setOrders(data);
+      if (data) {
+        setOrders(data);
+      } else {
+        console.error("Invalid data received from cancelOrderService");
+      }
     } catch (error) {
       console.error("Error canceling order:", error);
     }
   };
+  
 
   const handleDeleteOrder = async (idOrder) => {
     try {
@@ -45,7 +53,9 @@ const Order = () => {
       console.error("Error deleting order:", error);
     }
   };
-
+  const filteredOrders = orders?.filter(order =>
+    selectedState == null || order.state == selectedState
+  );
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) {
@@ -68,7 +78,7 @@ const Order = () => {
                 <h2 className="font-bold text-gray-500 dark:text-gray-400">Date</h2>
               </div>
               <div className="w-auto px-4 md:w-1/6 lg:w-2/12 ">
-                <select value={selectedState} onChange={handleStateChange}>
+                <select value={selectedState || undefined} onChange={handleStateChange}>
                   <option value={null}>All</option>
                   <option value={1}>Đang xử lý</option>
                   <option value={2}>Chờ giao hàng</option>
@@ -81,7 +91,7 @@ const Order = () => {
                 <h2 className="font-bold text-gray-500 dark:text-gray-400"> Total</h2>
               </div>
             </div>
-            <div className="py-4 mb-8 border-t border-b border-gray-200 dark:border-gray-700">
+            <div className="py-4 mb-8 border-t border-b border-gray-200 dark:border-gray-700 max-h-[500px] overflow-y-auto">
               {filteredOrders?.length > 0 ? (
                 filteredOrders.map((order) => (
                   <div key={order.id} className="flex flex-wrap items-center mb-6 -mx-4 md:mb-8">

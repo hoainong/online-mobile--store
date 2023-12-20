@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Product from "../../components/Product/Product";
-import { productService } from "../../apiServices/productService";
+import {
+  productAllService,
+  productSearchService,
+  productService,
+} from "../../apiServices/productService";
 import { useParams } from "react-router-dom";
 const ProductPage = () => {
   const [products, setProduct] = useState([]);
   const { trademark } = useParams();
-
+  const { searchKey } = useParams();
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const response = await productService(trademark);
-        setProduct(response);
+        if (trademark) {
+          const response = await productService(trademark);
+          setProduct(response);
+        } else if (searchKey) {
+          const response = await productSearchService(searchKey);
+          setProduct(response);
+        } else {
+          const response = await productAllService();
+          setProduct(response);
+        }
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
     };
 
     fetchApi();
-  }, [trademark]);
+  }, [trademark, searchKey]);
   return (
     <div>
       <Product data={products} trademark={trademark} />

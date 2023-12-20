@@ -13,16 +13,21 @@ import ReactPaginate from "react-paginate";
 import request from "../../../utils/request";
 import HomeCategoryCard from "../HomeCategoryCard/HomeCategoryCard";
 import { homeCategoryData } from "../HomeCategory/HomeCategoryData";
-const itemsCategory = homeCategoryData;
+
 export default function Product({ data, trademark }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataProduct, setDataProduct] = useState([]);
   const [nameCategory, setNameCategory] = useState("Categories");
+  const itemsCategory = homeCategoryData;
   const render = useEffect(() => {
     setDataProduct(data);
-    const nameCate = itemsCategory.find((item) => item.id == trademark)?.name;
-    setNameCategory(nameCate);
+    if (trademark) {
+      const nameCate = itemsCategory.find((item) => item.id == trademark)?.name;
+      setNameCategory(nameCate);
+    } else {
+      setNameCategory("Categories");
+    }
   }, [data]);
   const sortOptions = [
     { name: "Tăng theo giá", category: "Price", type: true },
@@ -184,7 +189,7 @@ export default function Product({ data, trademark }) {
         </Transition.Root>
         <div className="container mx-auto px-4">
           <div className="m-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 justify-center">
-            {itemsCategory.map((item, index) => (
+            {itemsCategory?.map((item, index) => (
               <HomeCategoryCard cate={item} key={index} />
             ))}
           </div>

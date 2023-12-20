@@ -27,12 +27,11 @@ const OrderDetail = () => {
 
   const fetchCartCheckout = async () => {
     try {
-      console.log(id);
       const formData = new FormData();
       formData.append("amount", amount);
       formData.append("orderId", id);
       const response = await axios.post(
-        "http://localhost:8080/payment/vnpayajax",
+        "http://localhost:8080/api/vnpayajax",
         formData
       );
       return response.data;
@@ -45,8 +44,7 @@ const OrderDetail = () => {
   const handlePay = async () => {
     try {
       const payResult = await fetchCartCheckout();
-      console.log(payResult);
-      //window.location.href = payResult;
+      window.location.href = payResult;
     } catch (error) {
       console.error("Error handling payment:", error);
     }
@@ -98,8 +96,8 @@ const OrderDetail = () => {
         <div className="flex flex-wrap">
           <div className="w-full lg:w-8/12">
             <div className="px-10">
-              {orderDetails?.map((item) => (
-                <div className="relative flex flex-wrap items-center pb-8 mb-8 -mx-4 border-b border-gray-200 dark:border-gray-700 xl:justify-between border-opacity-40">
+              {orderDetails?.map((item, index) => (
+                <div key={index} className="relative flex flex-wrap items-center pb-8 mb-8 -mx-4 border-b border-gray-200 dark:border-gray-700 xl:justify-between border-opacity-40">
                   <div className="w-full mb-2 lg:mb-0 h-96 md:h-44 md:w-44">
                     <img
                       src={item.image}
